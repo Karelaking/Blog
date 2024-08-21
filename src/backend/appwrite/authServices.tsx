@@ -13,11 +13,10 @@ type loginAccountType = {
 };
 
 class AuthServices {
-  client;
+  client = new Client();
   account;
 
   constructor() {
-    this.client = new Client();
     this.client.setEndpoint(environmentVariables.appwriteUrl);
     this.client.setProject(environmentVariables.appwriteProjectId);
     this.account = new Account(this.client);
@@ -38,7 +37,7 @@ class AuthServices {
         return newAccount;
       }
     } catch (error) {
-      throw error;
+      console.error("Appwrite authService :: createAccount :: error", error);
     }
   }
 
@@ -47,7 +46,16 @@ class AuthServices {
     try {
       return await this.account.createEmailPasswordSession(email, password);
     } catch (error) {
-      throw error;
+      console.error("Appwrite authService :: createAccount :: error", error);
+    }
+  }
+
+  // Guest login to account
+  async guestLogin() {
+    try {
+      await this.account.createAnonymousSession();
+    } catch (error) {
+      console.error("Appwrite authServices :: guestLogin :: error", error);
     }
   }
 
@@ -56,7 +64,7 @@ class AuthServices {
     try {
       return await this.account.get();
     } catch (error) {
-      throw error;
+      console.error("Appwrite authService :: getCurrentUser :: error", error);
     }
   }
 
@@ -65,8 +73,18 @@ class AuthServices {
     try {
       await this.account.deleteSessions();
     } catch (error) {
-      throw error;
+      console.error("Appwrite authService :: logOut :: error", error);
     }
+  }
+
+  // Update account information
+  async updateAccountInfo() {
+    // TODO: Update account information
+  }
+
+  // Delete account
+  async deleteAccount() {
+    // TODO: Delete account
   }
 }
 
