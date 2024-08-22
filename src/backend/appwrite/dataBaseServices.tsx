@@ -8,6 +8,7 @@ type BlogPostType = {
   status: "published" | "draft";
   userId: string;
   writer: string;
+  timeStamp: string;
 };
 
 class DataBaseServices {
@@ -28,13 +29,14 @@ class DataBaseServices {
     status,
     userId,
     writer,
+    timeStamp
   }: BlogPostType) {
     try {
       await this.dataBase.createDocument(
         environmentVariables.appwriteDatabaseId,
         environmentVariables.appweiteCollectionId,
         ID.unique(),
-        { title, content, featuredImage, status, userId, writer }
+        { title, content, featuredImage, status, userId, writer, timeStamp }
       );
     } catch (error) {
       console.error(
